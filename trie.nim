@@ -16,40 +16,40 @@ proc newTrie*(): Trie =
 
 proc insert*(t: Trie, word: string) =
   var node = t.root
-  for ch in word:
-    if ch notin node.children:
-      node.children[ch] = newTrieNode()
-    node = node.children[ch]
+  for item in word:
+    if item notin node.children:
+      node.children[item] = newTrieNode()
+    node = node.children[item]
   node.isEnd = true
 
 proc search*(t: Trie, word: string): bool =
   var node = t.root
-  for ch in word:
-    if ch notin node.children:
+  for item in word:
+    if item notin node.children:
       return false
-    node = node.children[ch]
+    node = node.children[item]
   return node.isEnd
 
 proc startsWith*(t: Trie, prefix: string): bool =
   var node = t.root
-  for ch in prefix:
-    if ch notin node.children:
+  for item in prefix:
+    if item notin node.children:
       return false
-    node = node.children[ch]
+    node = node.children[item]
   return true
 
 proc collectWords(node: TrieNode, prefix: string, results: var seq[string]) =
   if node.isEnd:
     results.add(prefix)
-  for ch, child in node.children:
-    collectWords(child, prefix & ch, results)
+  for item, child in node.children:
+    collectWords(child, prefix & item, results)
 
 proc autocomplete*(t: Trie, prefix: string): seq[string] =
   var node = t.root
-  for ch in prefix:
-    if ch notin node.children:
+  for item in prefix:
+    if item notin node.children:
       return @[]
-    node = node.children[ch]
+    node = node.children[item]
   var results: seq[string] = @[]
   collectWords(node, prefix, results)
   return results
